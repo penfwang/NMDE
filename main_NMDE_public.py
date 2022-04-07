@@ -19,7 +19,7 @@ import geatpy as ea
 from diverse import improved_evaluation
 from local_search import subset_repairing_scheme
 from new_selection import remove_empty
-from initialization import DAEA_initialization
+# from initialization import DAEA_initialization
 
 
 def uniform(low, up, size=None):####generate a matrix of the range of variables
