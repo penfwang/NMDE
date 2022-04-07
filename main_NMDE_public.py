@@ -17,7 +17,7 @@ from sklearn.model_selection import cross_val_score
 import matplotlib.pyplot as plt
 import geatpy as ea
 from diverse import improved_evaluation
-from local_search import p_local_search
+from local_search import subset_repairing_scheme
 from new_selection import remove_empty
 from initialization import DAEA_initialization
 
@@ -30,7 +30,7 @@ def uniform(low, up, size=None):####generate a matrix of the range of variables
 
 def findindex(org, x):
     result = []
-    for k,v in enumerate(org): #k和v分别表示org中的下标和该下标对应的元素
+    for k,v in enumerate(org): 
         if v == x:
             result.append(k)
     return result
@@ -70,11 +70,11 @@ def fit_train(x1, train_data):
     return f1, f2
 
 def kNNClassify(newInput, dataSet, labels, k):
-    numSamples = dataSet.shape[0]   # shape[0]表示行数
-    diff = np.tile(newInput, (numSamples, 1)) - dataSet  # 按元素求差值
-    squaredDiff = diff ** 2  # 将差值平方
-    squaredDist = squaredDiff.sum(axis = 1)   # 按行累加
-    distance = squaredDist ** 0.5  # 将差值平方和求开方，即得距离
+    numSamples = dataSet.shape[0]   
+    diff = np.tile(newInput, (numSamples, 1)) - dataSet  
+    squaredDiff = diff ** 2  
+    squaredDist = squaredDiff.sum(axis = 1)   
+    distance = squaredDist ** 0.5 
     sortedDistIndices = distance.argsort()
     classCount = {}
     for i in range(k):
@@ -295,7 +295,7 @@ def main(dataset_name):
         print(len(pop_u))
         pop_mi = pop_new + offspring
         pop1 = delete_duplicate(pop_mi)
-        pop1, fit_num,pop_unique = p_local_search(pop1,pop_u,fit_num,x_train,ee)
+        pop1, fit_num,pop_unique = subset_repairing_scheme(pop1,pop_u,fit_num,x_train,ee)
         offspring, each_rank_index = toolbox.select1(pop1, ee, MU, gen)####alg5
         first_rank_population = [pop1[m] for m in each_rank_index[0]]
         print('len(offspring)', len(offspring))
@@ -315,8 +315,8 @@ if __name__ == "__main__":
     pop,first_rank_population = main(dataset)
     index_non33 = first_nondominated(pop)
     # front_non = [pop[m] for m in index_non33]
-    folder1 = '/vol/grid-solar/sgeusers/wangpeng/multi-result/split_73' + '/' + 'train' + str(dataset) + ".npy"
-    folder2 = '/vol/grid-solar/sgeusers/wangpeng/multi-result/split_73' + '/' + 'test' +  str(dataset) + ".npy"
+    folder1 = 'train' + str(dataset) + ".npy"
+    folder2 = 'test' +  str(dataset) + ".npy"
     x_train = np.load(folder1)
     x_test = np.load(folder2)
     # front_non, front = output2(pop,ee)
@@ -332,7 +332,7 @@ if __name__ == "__main__":
     fig1 = plt.scatter(front[:,1], front[:,0], color='r', lw=1.5,marker='o',ls= '-.')
     fig2 =plt.scatter(f[:, 1], f[:, 0], color='k', lw=1.5,marker='+',ls= '-.')
     plt.grid(True)
-    plt.legend([fig1,fig2],['LBPADE','NSGAII'])
+    plt.legend([fig1,fig2],['NMDE','NSGAII'])
     plt.axis("tight")
     plt.show()
     name2 = 'NSGAII_test_'+ str(dataset) + ".npy"
@@ -340,6 +340,6 @@ if __name__ == "__main__":
     fig1 = plt.scatter(front_testing2[:,1], front_testing2[:,0], color='r', lw=1.5,marker='o',ls= '-.')
     fig2 =plt.scatter(f1[:, 1], f1[:, 0], color='k', lw=1.5,marker='+',ls= '-.')
     plt.grid(True)
-    plt.legend([fig1,fig2],['LBPADE','NSGAII'])
+    plt.legend([fig1,fig2],['NMDE','NSGAII'])
     plt.axis("tight")
     plt.show()
