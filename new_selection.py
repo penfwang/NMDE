@@ -20,7 +20,7 @@ def find_all(a_str, sub):
 
 def findindex(org, x):
     result = []
-    for k,v in enumerate(org): #k和v分别表示org中的下标和该下标对应的元素
+    for k,v in enumerate(org): 
         if v == x:
             result.append(k)
     return result
@@ -100,79 +100,6 @@ def remove_empty(pop):
             pop[i][kk] = 1
     return pop
 
-def selection_based_dimension(pop,ee,k):
-    s = []#########################the output
-    whole_index = []########################each dimension has num solutions
-    sucess_index = []#######the set of index
-    dis = []
-    if len(pop) == 0:
-        return pop
-    EXA_fit = np.array([ind.fitness.values for ind in pop])
-    # plt.scatter(EXA_fit[:,1], EXA_fit[:,0], color='r', lw=1.5,marker='o',ls= '-.')
-    # plt.show()
-    EXA_0_list = list(EXA_fit[:, 0])  #####error rate
-    EXA_1_list = list(EXA_fit[:, 1])  #####subset size
-    single1_index = set(EXA_1_list)
-    single1_index = sorted(list(single1_index))
-    # print('the total groups', len(single1_index),len(pop))
-    if len(single1_index) == len(pop):  #### this means the solutions have different sizes that means they are all unique.
-        return pop
-    else:  ###############according to the size index to find the error within the range ee,
-        for i in range(len(single1_index)):
-            index_of_size = findindex(EXA_fit[:, 1],single1_index[i]) ###the index of some solutions with the same size(size changes)
-            if len(index_of_size) > 1:  ###multiple solutions have the same size
-                whole_index.append(index_of_size)
-                temp0 = [EXA_0_list[m] for m in index_of_size]
-                temp_minus_min = [abs(jj-min(temp0)) for jj in temp0]
-                dis.append(temp_minus_min)
-                index_error = np.argwhere(abs(temp0-min(temp0)) <= ee)##########the distance to the minimal error
-                if len(index_error) > 1:#######multiple different solutions have similar classification performance
-                    list1 = []
-                    for ii in index_error:
-                        iii = random.choice(ii)
-                        list1.append(iii)
-                    list2 = [index_of_size[t] for t in list1]  ####size same, and error in a range same
-                    ins = [pop[tt] for tt in list2]
-                    s.extend(ins)
-                    sucess_index.extend(list2)
-                else:#(len(index_error) == 1) didn't have multimidal solutions
-                    c = random.choice(index_error)
-                    cc = random.choice(c)
-                    s.append(pop[index_of_size[cc]])
-                    sucess_index.append(index_of_size[cc])
-            else:###########################only one solution select num features
-                ccc = random.choice(index_of_size)
-                s.append(pop[ccc])
-                sucess_index.append(ccc)
-    if len(s) == k:
-        return s
-    elif len(s) > k:
-       dele_num = len(s) - k
-       # fail_index = []
-       # for i in range(len(pop)):
-       #     if i not in sucess_index:
-       #         fail_index.append(i)
-       distances_in_search = crowding_estimation_in_search_space(pop,s)
-       # distances_in_objective = assignment_in_objective(s,ee)
-       # dis_final = two_CD_one(distances_in_search,distances_in_objective)
-       sorted_index = np.argsort(distances_in_search)
-       tt_index = sorted_index[:dele_num]  #####################choose the needed selected index
-       dele_individual = [s[pp] for pp in tt_index]
-       for de in dele_individual:
-           s.remove(de)
-       return s
-    else:
-        add_num = k - len(s)
-        ##############another method is to choose soluitions basd on the distance to (minf1,minf2)
-        ##############
-        #dis_to_idea_point,add_index= dis_to_each_dimension_lowest(dis,whole_index,sucess_index)
-        dis_to_idea_point,add_index = dis_to_ideal(EXA_0_list,EXA_1_list,EXA_fit,whole_index,sucess_index)
-        sorted_index = np.argsort(dis_to_idea_point)#####select the small distance
-        tt_index = sorted_index[:add_num]#####################choose the needed selected index
-        list2 = [add_index[t] for t in tt_index]
-        ins = [pop[tt] for tt in list2]
-        s.extend(ins)
-        return s
 
 
 def two_CD_one(a,b):
