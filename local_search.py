@@ -46,7 +46,7 @@ def find_all(a_str, sub):
 
 def findindex(org, x):
     result = []
-    for k,v in enumerate(org): #k和v分别表示org中的下标和该下标对应的元素
+    for k,v in enumerate(org): 
         if v == x:
             result.append(k)
     return result
@@ -62,33 +62,6 @@ def get_whole_01(individuals):
         all_index.append(x1)  ##store all individuals who have changed to 0 or 1
     return all_index
 
-def mutDE(y, a, b, c):###mutation:DE/rand/1
-    f = 0.8
-    for i in range(len(y)):
-        y[i] = a[i] + f*(b[i]-c[i])
-        if y[i] > 1:
-            y[i] = 1
-        if y[i] < 0:
-            y[i] = 0
-    return y
-
-
-def DE_mutation(temp,pop_non):
-    if len(pop_non) == 0:
-        temp_new = temp
-    elif len(pop_non) == 1:
-        index = [0,0]
-        b = pop_non[index[0]]
-        c = pop_non[index[1]]
-        y = toolbox.clone(temp)
-        temp_new = mutDE(y, temp, b, c)
-    else:
-      index = random.sample(range(0,len(pop_non)),2)
-      b = pop_non[index[0]]
-      c = pop_non[index[1]]
-      y = toolbox.clone(temp)
-      temp_new = mutDE(y, temp, b, c)
-    return temp_new
 
 
 
@@ -118,49 +91,6 @@ def first_nondominated(PF):
     index_non = np.array(list(find_all(x1, '1')))
     return index_non
 
-
-def Gaussian_produce_solution(ins,u,pop_unique,pop_unique_fit,fit_num,x_train,feature_possible):
-    ###ins stores the solutions who have the same classification performance
-    matrix = np.zeros((len(ins), len(ins[0])))
-    matrix1 = np.zeros((len(ins), len(ins[0])))
-    delete_solution = []
-    add_solution = []
-    # for i in range(len(ins)):
-    #     matrix[i,:] = ins[i]
-    #     matrix1[i,:] = (matrix[i,:] - u)**2###part of the processes to calculate sigma
-    # sigma = matrix1.mean(axis=0)
-    ####################################################################whether u has shown before
-    fit = []
-    u1 = 1 * (u >= 0.6)
-    # print(u1)
-    all_index_children = "".join(map(str, u1))
-    value_posi = np.array(list(find_all(all_index_children, '1'))) + 1
-    # print('selected positions from u',value_posi)
-    if len(value_posi) == 0:
-       u3 = 1 * (feature_possible > 0.1)
-       u = u3
-    all_index_pop_unique = get_whole_01(pop_unique)
-    # for i in range(1):########check u whether in pop_unique, later maybe there will have more than one solution
-    index = findindex(all_index_pop_unique, all_index_children)
-    if len(index) == 0:#####It means there's a new solution which needs to calculate its fitness values
-        fit.append(fit_train(u, x_train))##calculate new solution's fitness
-        fit_num = fit_num + 1
-        fit.extend([ind.fitness.values for ind in ins])##insert the fitness of previous solutions with the same performance
-        fit = np.array(fit)
-        index_n = first_nondominated(fit)##sort based the non-dominated concept
-        u2 = toolbox.clone(ins[0])
-        for i in range(len(u2)):
-                u2[i] = u[i]
-        u2.fitness.values = fit[0]
-        pop_unique.append(u2)################################################################add
-        if 0 in index_n:##new solution is better. u is the solution with the same accuracy, but may have the same size.
-                delete_solution.extend(ins)
-                add_solution.append(u2)
-        # return delete_solution,add_solution,fit_num,pop_unique
-    else:#####it is a duplicated solution in unique set
-                 delete_solution = []
-                 add_solution = []
-    return delete_solution,add_solution,fit_num,pop_unique
 
 
 
@@ -197,7 +127,7 @@ def check_whether_it_is_shown(u2,unique_set):
 
 
 
-def p_local_search(pop,pop_unique,f_eva,x_train,ee):
+def subset_repairing_scheme(pop,pop_unique,f_eva,x_train,ee):
     if len(pop) == 0:
         return pop, f_eva
     EXA_fit = np.array([ind.fitness.values for ind in pop])
