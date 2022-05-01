@@ -22,7 +22,7 @@ def fit_train(x1, train_data):
      value_position = np.insert(value_position, 0, 0)  # insert the column of label
      tr = train_data[:, value_position]
      clf = KNeighborsClassifier(n_neighbors = 5)
-     scores = cross_val_score(clf, tr[:,1:],tr[:,0], cv = 10)
+     scores = cross_val_score(clf, tr[:,1:],tr[:,0], cv = 5)
      f1 = np.mean(1 - scores)
      f2 = (len(value_position)-1)/(train_data.shape[1] - 1)
      # f2 = len(value_position) - 1
@@ -39,7 +39,7 @@ def find_all(a_str, sub):
 
 def findindex(org, x):
     result = []
-    for k,v in enumerate(org): #k和v分别表示org中的下标和该下标对应的元素
+    for k,v in enumerate(org): 
         if v == x:
             result.append(k)
     return result
