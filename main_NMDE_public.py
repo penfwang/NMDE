@@ -61,7 +61,7 @@ def fit_train(x1, train_data):
      # clf = SVC(kernel="linear", C=0.025)
      # clf = DecisionTreeClassifier(max_depth=5)
      # clf = MLPClassifier(alpha=1, max_iter=1000)
-     scores = cross_val_score(clf, tr[:,1:],tr[:,0], cv = 10)
+     scores = cross_val_score(clf, tr[:,1:],tr[:,0], cv = 5)
      f1 = np.mean(1 - scores)
      f2 = (len(value_position)-1)/(train_data.shape[1] - 1)
      # f2 = len(value_position) - 1
