@@ -30,7 +30,7 @@ def fit_train(x1, train_data):
      value_position = np.insert(value_position, 0, 0)  # insert the column of label
      tr = train_data[:, value_position]
      clf = KNeighborsClassifier(n_neighbors = 5)
-     scores = cross_val_score(clf, tr[:,1:],tr[:,0], cv = 10)
+     scores = cross_val_score(clf, tr[:,1:],tr[:,0], cv = 5)
      f1 = np.mean(1 - scores)
      f2 = (len(value_position)-1)/(train_data.shape[1] - 1)
     return f1, f2
