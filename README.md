@@ -11,6 +11,6 @@ We are more than happy to share the related Python codes with you. If you do som
   publisher={IEEE}
 }
 
-Please feel free to contact me if you have any questions or comments. 
+Please feel free to contact me if you have any questions or comments (wangpeng@ecs.vuw.ac.nz). 
 
 File "main_NMDE_public" is the main procedure
