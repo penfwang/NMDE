@@ -229,8 +229,7 @@ toolbox = base.Toolbox()
 def main(dataset_name):
     seed = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]
     random.seed(seed[19])
-    folder1 = '/vol/grid-solar/sgeusers/wangpeng/multi-result/split_73' + '/' + 'train' + str(
-        dataset_name) + ".npy"
+    folder1 = 'train' + str(dataset) + ".npy"
     x_train = np.load(folder1)
     ee = 1 / x_train.shape[0]
     NDIM = x_train.shape[1] - 1
