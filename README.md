@@ -14,3 +14,5 @@ We are more than happy to share the related Python codes with you. If you do som
 Please feel free to contact me if you have any questions or comments (wangpeng@ecs.vuw.ac.nz). 
 
 File "main_NMDE_public" is the main procedure
+
+The used geatpy version in NMDE is 2.6.0. If your used version of geatpy is 2.7.0, please change the function ea.indicator.ndsortDED as ea.ndsortDED.
