@@ -354,7 +354,7 @@ def find_error_same_with_non_sorting(index_error,index_of_size,multimal_index,ea
 
 def findindex(org, x):
     result = []
-    for k,v in enumerate(org): #k和v分别表示org中的下标和该下标对应的元素
+    for k,v in enumerate(org):
         if v == x:
             result.append(k)
     return result
