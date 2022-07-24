@@ -12,15 +12,6 @@ We are more than happy to share the related Python codes with you. If you do som
 }
 
 
-@article{wang2021multiobjective,
-  title={Multiobjective Differential Evolution for Feature Selection in Classification},
-  author={Wang, Peng and Xue, Bing and Liang, Jing and Zhang, Mengjie},
-  journal={IEEE Trans. Cybern.},
-  year={DOI: 10.1109/TCYB.2021.3128540},
-  publisher={IEEE}
-}
-
-
 Please feel free to contact me if you have any questions or comments (wangpeng@ecs.vuw.ac.nz). 
 
 File "main_NMDE_public" is the main procedure
